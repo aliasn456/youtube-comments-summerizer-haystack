@@ -2,14 +2,15 @@ from playwright.sync_api import sync_playwright
 from datetime import datetime
 import csv
 import re
+import sys
 
-def main():
+def main(youtube_link):
   with sync_playwright() as p:
     browser = p['chromium'].launch()
     try:
         page = browser.new_page()
         page.set_viewport_size({"width": 1920, "height": 2080})
-        page.goto("https://www.youtube.com/watch?v=x8VkB8ap_FQ")
+        page.goto(youtube_link)
         
         page.locator("#leading-section").get_by_text("Comments").click()
         inner_comments = page.locator("#main").all()
@@ -34,4 +35,5 @@ def main():
         browser.close()
     
 
-main()
+if __name__ == "__main__":
+   main(sys.argv[1])
