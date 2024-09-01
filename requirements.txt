@@ -1,0 +1,5 @@
+haystack-ai==2.4.0
+amazon-bedrock-haystack==1.0.2
+pandas==2.2.2
+playwright==1.46.0
+Requests==2.32.3
