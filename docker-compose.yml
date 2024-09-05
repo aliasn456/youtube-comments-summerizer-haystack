@@ -1,0 +1,18 @@
+services:
+  hayhooks:
+    build: .
+    container_name: hayhooks
+    environment:
+     - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+     - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+     - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - '1416:1416'
+    volumes:
+      - ./src/pipelines:/opt/pipelines
+      - ./src/custom_components:/opt/custom_components
+    healthcheck:
+      test: ["CMD-SHELL", "curl --silent --fail localhost:1416/status || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 3

@@ -1,0 +1,52 @@
+components:
+  llm:
+    init_parameters:
+      aws_access_key_id:
+        env_vars:
+        - AWS_ACCESS_KEY_ID
+        strict: false
+        type: env_var
+      aws_profile_name:
+        env_vars:
+        - AWS_PROFILE
+        strict: false
+        type: env_var
+      aws_region_name:
+        env_vars:
+        - AWS_DEFAULT_REGION
+        strict: false
+        type: env_var
+      aws_secret_access_key:
+        env_vars:
+        - AWS_SECRET_ACCESS_KEY
+        strict: false
+        type: env_var
+      aws_session_token:
+        env_vars:
+        - AWS_SESSION_TOKEN
+        strict: false
+        type: env_var
+      max_length: 99
+      model: amazon.titan-text-lite-v1
+      streaming_callback: null
+      truncate: true
+    type: haystack_integrations.components.generators.amazon_bedrock.generator.AmazonBedrockGenerator
+  prompt:
+    init_parameters:
+      required_variables: null
+      template: "You will be provided a few of the top comments for a youtube video.\
+        \ Based on the comments, Summerize what people think of the video.\nComments:\
+        \  \n{% for review in reviews %}\n  Comment:\n\n  {{ review['author'] }} wrote\
+        \ {{ review['comment'] }}\n{% endfor %}  \n"
+      variables: null
+    type: haystack.components.builders.prompt_builder.PromptBuilder
+  review_data:
+    init_parameters: {}
+    type: components.ReviewData
+connections:
+- receiver: prompt.reviews
+  sender: review_data.reviews
+- receiver: llm.prompt
+  sender: prompt.prompt
+max_loops_allowed: 100
+metadata: {}
