@@ -13,7 +13,7 @@ def main(youtube_link):
         page.goto(youtube_link)
         
         page.locator("#leading-section").get_by_text("Comments").click()
-        inner_comments = page.locator("#main").all()
+        inner_comments = page.locator("#comment").all()
 
         # datetime object containing current date and time
         now = datetime.now()
@@ -25,8 +25,10 @@ def main(youtube_link):
             csvwriter = csv.writer(csvfile)
             # writing the fields
             csvwriter.writerow(['author','comment'])
+            page.screenshot(path="screenshot.png")
             # writing the data rows
             for index in range(15):
+                print(inner_comments[index].inner_text())
                 author_name = re.sub('\n.*','', inner_comments[index].locator("#header-author").inner_text())
                 inner = re.sub('"','', inner_comments[index].locator("#content-text").inner_text())
                 csvwriter.writerow([author_name, inner])
